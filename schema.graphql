@@ -1,0 +1,9 @@
+type NFTItem @entity {
+  id: ID!
+  nftContract: Bytes!
+  tokenId: BigInt!
+  seller: Bytes!
+  owner: Bytes
+  price: BigInt!
+  sold: Boolean
+}

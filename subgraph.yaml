@@ -1,0 +1,29 @@
+# definition for subgraph
+specVersion: 0.0.2
+description: NFT Marketplace
+repository: https://github.com/CrossChain-Software/NFT-Marketplace
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: NFTMarket
+    # network: rinkeby
+    network: mainnet
+    source:
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3" # only tracks events from a contract with them
+      abi: NFTMarket
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - NFTItem
+      abis:
+        - name: NFTMarket
+          file: ./artifacts/contracts/NFTMarket.sol/NFTMarket.json
+      eventHandlers: # every time this event is emitted, we want to run these methods
+        - event: MarketItemCreated(indexed uint256,indexed address,indexed uint256,address,address,uint256,bool)
+          handler: handleItemCreated
+        - event: MarketItemSold(indexed uint256,address)
+          handler: handleItemSold
+      file: ./src/mapping.ts
